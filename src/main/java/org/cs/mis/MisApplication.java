@@ -13,7 +13,7 @@ public class MisApplication implements CommandLineRunner {
 	private static final Logger log = LoggerFactory.getLogger(MisApplication.class);
 
 	@Autowired
-    private FileService fileService;
+    private CsvFileService csvFileService;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(MisApplication.class, args);
@@ -23,28 +23,12 @@ public class MisApplication implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		log.info("Starting MIs Application");
 
-		if (args.length != 1){
-			log.error("usage: <program> <xlsx-file>");
-			System.exit(-1);
-		}
+		String csvFile = csvFileService.createCsvFile(args);
 
-		// check xlsx to csv program is available
-		if (!fileService.checkConverterExists()){
-			log.error("Exiting...");
-            System.exit(-1);
-		}
+		
 
-		String excelFile = args[0];
-
-		if (fileService.fileExists(excelFile)){
-			String csvFile = fileService.convertExcelToCsv(excelFile);
-			log.info(csvFile);
-	
-			fileService.getMIs(csvFile);
-		}
-		else {
-			log.error("File does not exist: " + excelFile);
-			System.exit(-1);
-		}
+		
 	}
+
+	
 }
