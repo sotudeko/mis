@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -25,8 +27,9 @@ public class MIService {
     @Autowired
     private FileIoService fileIoService;
 
-    public void getMIs(String csvFile) throws FileNotFoundException, IOException{
+    public List<List<String>> getMIs(String csvFile) throws FileNotFoundException, IOException{
         Map<String, Integer> cses = fileIoService.readFile(CSES_LISTFILE);
+        String timestamp = DateTimeFormatter.ofPattern("ddMMyy_HHmm").format(LocalDateTime.now());
 
         List<List<String>> records = new ArrayList<List<String>>();
 
@@ -34,9 +37,9 @@ public class MIService {
         int totalMis = 0;
 
         try (CSVReader csvReader = new CSVReader(new FileReader(csvFile));) {
+
             String[] values = null;
             while ((values = csvReader.readNext()) != null) {
-                records.add(Arrays.asList(values));
 
                 if (values.length > 3){
                     String customer = values[1];
@@ -46,7 +49,8 @@ public class MIService {
                     if (cses.containsKey(cse)){
                         uniqueCustomers++;
                         totalMis+=Integer.valueOf(mis);
-                        //log.info(customer + ":" + cse + ":" + mis);
+                        String[] record = new String[] {timestamp, customer, cse, mis};
+                        records.add(Arrays.asList(record));
                     }
                 }
             }
@@ -54,6 +58,8 @@ public class MIService {
 
         log.info("Unique customers: " + uniqueCustomers);
         log.info("Meaningful interactions: " + totalMis);
+
+        return records;
     }
 
 }

@@ -5,6 +5,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,11 +36,11 @@ public class MisApplication implements CommandLineRunner {
 		}
 
 		log.info("Processing csv file '" + csvFile + "' for MI count ");
-		miService.getMIs(csvFile);
+		List<List<String>> records = miService.getMIs(csvFile);
 
-
-		
-
+		for (List<String> record : records){
+			log.info(record.toString());
+		}
 		
 	}
 
