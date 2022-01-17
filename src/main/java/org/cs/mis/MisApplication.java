@@ -39,7 +39,7 @@ public class MisApplication implements CommandLineRunner {
 		List<List<String>> records = miService.getMIs(csvFile);
 
 		for (List<String> record : records){
-			log.info(record.toString());
+			//log.info(record.toString());
 		}
 		
 	}
