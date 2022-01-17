@@ -1,10 +1,15 @@
 package org.cs.mis;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -101,11 +106,12 @@ public class CsvFileService {
             Process process = Runtime.getRuntime().exec(command);
 
             String line;
-            StringBuilder output = new StringBuilder();
+            List<String> output = new ArrayList<>();
+
             BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
 
             while ((line = reader.readLine()) != null) {
-                output.append(line + "\n");
+                output.add(line);
             }
 
             int exitVal = process.waitFor();
@@ -121,17 +127,26 @@ public class CsvFileService {
         return csvFile;
     }
 
-    private String dumpToFile(StringBuilder output) {
+    private String dumpToFile(List<String> lines) throws IOException {
         String timestamp = DateTimeFormatter.ofPattern("ddMMyy_HHmm").format(LocalDateTime.now());
         String csvFile = "./mi-" + timestamp + ".csv";
+		String[] header = { "Date", "Company", "CSE", "MI-Count", "Null"};
 
         log.info("Writing output to csv file: " + csvFile);
-        //log.info(output.toString());
+
+        BufferedWriter writer = Files.newBufferedWriter(Paths.get(csvFile));
+	
+		writer.write(String.join(",", header));
+		writer.newLine();
+			
+		for (String line : lines) {
+            writer.write(line);
+            writer.newLine();
+        }
+
+        writer.close();
 
         return csvFile;
 
     }
-
-    
-
 }
