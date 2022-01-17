@@ -1,11 +1,17 @@
 package org.cs.mis;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.stereotype.Service;
 
 @Service
@@ -25,6 +31,19 @@ public class FileIoService {
 		}
 		
 		return exists;
+	}
+
+	public Map<String, Integer> readFile(String filename) throws IOException{
+		Map<String, Integer> lines = new HashMap<String, Integer>();
+
+		try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
+			String line;
+
+			while ((line = br.readLine()) != null) {
+				lines.put(line, 1);
+			}
+		}
+		return lines;
 	}
     
 }

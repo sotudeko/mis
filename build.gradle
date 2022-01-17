@@ -8,12 +8,6 @@ group = 'org.cs'
 version = '1.0'
 sourceCompatibility = '8'
 
-configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
-	}
-}
-
 repositories {
 	mavenCentral()
 }
@@ -22,8 +16,8 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
-	compileOnly 'org.projectlombok:lombok'
-	annotationProcessor 'org.projectlombok:lombok'
+	implementation 'com.opencsv:opencsv:4.1'
+
 }
 
 // test {
