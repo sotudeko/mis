@@ -1,4 +1,4 @@
-package org.cs.mis;
+package org.cs.mis.service;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -25,19 +25,13 @@ public class CsvFileService {
     
     private String converterName = "xlsx2csv";
 
-    public String createCsvFile(String args[]) throws Exception{
+    public String excelToCsvFile(String excelFile) throws Exception{
         String csvFile = null;
 
-        if (args.length != 1){
-			log.error("usage: <program> <xlsx-file>");
-		}
-        else {
-            String converterPath = this.checkConverterExists();
+        String converterPath = this.checkConverterExists();
 
-            if (converterPath != null){     
-                String excelFile = args[0];
-                csvFile = this.convertExcelToCsv(converterPath, excelFile);
-            }
+        if (converterPath != null) {
+            csvFile = this.convertExcelToCsv(converterPath, excelFile);
         }
 
         return csvFile;        

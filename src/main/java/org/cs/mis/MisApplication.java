@@ -1,5 +1,8 @@
 package org.cs.mis;
 
+import org.cs.mis.service.CsvFileService;
+import org.cs.mis.service.FileIoService;
+import org.cs.mis.service.MIService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -20,6 +23,9 @@ public class MisApplication implements CommandLineRunner {
 	@Autowired
     private MIService miService;
 
+	@Autowired
+	private FileIoService fileIoService;
+
 	public static void main(String[] args) {
 		SpringApplication.run(MisApplication.class, args);
 	}
@@ -28,10 +34,22 @@ public class MisApplication implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		log.info("Starting MIs Application");
 
-		String csvFile = csvFileService.createCsvFile(args);
+		if (args.length != 1){
+			log.error("usage: <program> <xlsx-file>");
+			System.exit(-1);
+		}
+
+		String excelFile = args[0];
+
+		if (!fileIoService.fileExists(excelFile)) {
+			log.error("Exiting...");
+			System.exit(-1);
+		}
+
+		String csvFile = csvFileService.excelToCsvFile(excelFile);
 
 		if (csvFile == null){
-			log.error("No csv file.. exiting");
+			log.error("Error creating csv file... exiting");
 			System.exit(-1);
 		}
 

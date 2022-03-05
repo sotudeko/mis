@@ -1,6 +1,5 @@
-package org.cs.mis;
+package org.cs.mis.service;
 
-import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
