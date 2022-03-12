@@ -59,7 +59,6 @@ public class MisApplication implements CommandLineRunner {
 		for (List<String> record : records){
 			//log.info(record.toString());
 		}
-		
 	}
 
 	

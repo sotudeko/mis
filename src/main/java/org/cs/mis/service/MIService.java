@@ -45,7 +45,7 @@ public class MIService {
                     String cse = values[2];
                     String mis = values[3];
 
-                    if (cses.containsKey(cse)){
+                    if (cse.length() > 1 && cses.containsKey(cse)){
                         uniqueCustomers++;
                         totalMis+=Integer.valueOf(mis);
                         String[] record = new String[] {timestamp, customer, cse, mis};
